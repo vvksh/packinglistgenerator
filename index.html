@@ -33,7 +33,27 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
+        #basic {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        #airTravel {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        #internationalTravel {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
         #work {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        #swimming {
             background-color: #3498db;
             color: #fff;
         }
@@ -48,8 +68,23 @@
             color: #fff;
         }
 
+        #multiDay {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
         #hiking {
             background-color: #27ae60;
+            color: #fff;
+        }
+
+        #skiing {
+            background-color: #9b59b6;
+            color: #fff;
+        }
+
+        #meds {
+            background-color: #c0392b;
             color: #fff;
         }
 
@@ -57,12 +92,12 @@
             list-style-type: none;
             padding: 0;
             display: flex;
-            flex-wrap: wrap; /* Enable flexbox wrapping */
-            justify-content: space-between; /* Add space between columns */
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         li {
-            flex: 0 0 calc(30% - 20px); /* Three columns with margin */
+            flex: 0 0 calc(30% - 20px);
             box-sizing: border-box;
             display: flex;
             align-items: center;
@@ -96,7 +131,23 @@
             color: #fff;
         }
 
+        .basic {
+            color: #1d5a90;
+        }
+
+        .airTravel {
+            color: #a93222;
+        }
+
+        .internationalTravel {
+            color: #c27c0e;
+        }
+
         .work {
+            color: #1d8348;
+        }
+
+        .swimming {
             color: #1d5a90;
         }
 
@@ -108,8 +159,20 @@
             color: #c27c0e;
         }
 
+        .multiDay {
+            color: #1d8348;
+        }
+
         .hiking {
             color: #1d8348;
+        }
+
+        .skiing {
+            color: #8e44ad;
+        }
+
+        .meds {
+            color: #96281b;
         }
 
         li:hover {
@@ -121,10 +184,17 @@
     <h1>Packing List Generator</h1>
     
     <form id="tagForm">
+        <button id="basic" type="button" name="basic" onclick="toggleTag('basic')">Basic</button>
+        <button id="airTravel" type="button" name="airTravel" onclick="toggleTag('airTravel')">Air Travel</button>
+        <button id="internationalTravel" type="button" name="internationalTravel" onclick="toggleTag('internationalTravel')">International Travel</button>
         <button id="work" type="button" name="work" onclick="toggleTag('work')">Work</button>
+        <button id="swimming" type="button" name="swimming" onclick="toggleTag('swimming')">Swimming</button>
         <button id="coldWeather" type="button" name="coldWeather" onclick="toggleTag('coldWeather')">Cold Weather</button>
-        <button id="overnight" type="button" name="overnight" onclick="toggleTag('overnight')">Staying Overnight</button>
+        <button id="overnight" type="button" name="overnight" onclick="toggleTag('overnight')">Overnight</button>
+        <button id="multiDay" type="button" name="multiDay" onclick="toggleTag('multiDay')">Multi-Day</button>
         <button id="hiking" type="button" name="hiking" onclick="toggleTag('hiking')">Hiking</button>
+        <button id="skiing" type="button" name="skiing" onclick="toggleTag('skiing')">Skiing</button>
+        <button id="meds" type="button" name="meds" onclick="toggleTag('meds')">Meds</button>
     </form>
 
     <h2>Packing List</h2>
@@ -150,10 +220,17 @@
 
         function generatePackingList() {
             const itemsByTag = {
-                work: ["Laptop", "Business Attire", "Notebook", "Pen", "Mouse", "Chargers"],
+                basic: ["phone", "phone charger", "wallet with id", "sunglasses", "water bottle", "headphones", "sunscreen"],
+                airTravel: ["snacks", "neck pillow", "check in online"],
+                internationalTravel: ["plug adapter", "passport", "ipad with downloaded content"],
+                work: ["Laptop", "laptop charger"],
+                swimming: ["swim trunks"],
                 coldWeather: ["Warm Jacket", "Gloves", "Hat", "Scarves", "Thermal Socks"],
-                overnight: ["Toothbrush", "Pajamas", "Sleeping Bag", "Toiletries", "Chargers"],
-                hiking: ["Hiking Boots", "Backpack", "Water Bottle", "Snacks", "Map", "First Aid Kit"]
+                overnight: ["Toiletries", "Pajamas", "Flipflops", "Towel", "Underwears"],
+                multiDay: ["beard trimmer"],
+                hiking: ["Hiking Boots", "First Aid Kit"],
+                skiing: ["Ski gear", "Ski goggles", "boots", "helmets"],
+                meds: ["Meds as needed"]
             };
 
             const packingList = Array.from(selectedTags).flatMap(tag => itemsByTag[tag] || []);
@@ -173,10 +250,17 @@
                 const listItem = document.createElement('li');
 
                 const checkbox = document.createElement('div');
-                checkbox.className = `checkbox ${selectedTags.has('work') ? 'work' :
+                checkbox.className = `checkbox ${selectedTags.has('basic') ? 'basic' :
+                                     selectedTags.has('airTravel') ? 'airTravel' :
+                                     selectedTags.has('internationalTravel') ? 'internationalTravel' :
+                                     selectedTags.has('work') ? 'work' :
+                                     selectedTags.has('swimming') ? 'swimming' :
                                      selectedTags.has('coldWeather') ? 'coldWeather' :
                                      selectedTags.has('overnight') ? 'overnight' :
-                                     selectedTags.has('hiking') ? 'hiking' : ''}`;
+                                     selectedTags.has('multiDay') ? 'multiDay' :
+                                     selectedTags.has('hiking') ? 'hiking' :
+                                     selectedTags.has('skiing') ? 'skiing' :
+                                     selectedTags.has('meds') ? 'meds' : ''}`;
                 checkbox.id = `checkbox-${index}`;
                 checkbox.onclick = () => toggleCheckbox(index);
                 listItem.appendChild(checkbox);
