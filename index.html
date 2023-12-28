@@ -56,13 +56,18 @@
         ul {
             list-style-type: none;
             padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* Enable flexbox wrapping */
+            justify-content: space-between; /* Add space between columns */
         }
 
         li {
+            flex: 0 0 calc(30% - 20px); /* Three columns with margin */
+            box-sizing: border-box;
             display: flex;
             align-items: center;
             padding: 10px;
-            margin: 5px 0;
+            margin: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
             transition: box-shadow 0.3s ease;
         }
@@ -71,13 +76,13 @@
             margin-right: 10px;
             width: 20px;
             height: 20px;
-            border: 2px solid transparent; /* Transparent border initially */
+            border: 2px solid transparent;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition border-color */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .checkbox.checked {
@@ -86,7 +91,7 @@
         }
 
         .checkbox.checked::before {
-            content: '\2713'; /* Unicode checkmark character */
+            content: '\2713';
             font-size: 16px;
             color: #fff;
         }
@@ -145,10 +150,10 @@
 
         function generatePackingList() {
             const itemsByTag = {
-                work: ["Laptop", "Business Attire"],
-                coldWeather: ["Warm Jacket", "Gloves", "Hat"],
-                overnight: ["Toothbrush", "Pajamas", "Sleeping Bag"],
-                hiking: ["Hiking Boots", "Backpack", "Water Bottle"]
+                work: ["Laptop", "Business Attire", "Notebook", "Pen", "Mouse", "Chargers"],
+                coldWeather: ["Warm Jacket", "Gloves", "Hat", "Scarves", "Thermal Socks"],
+                overnight: ["Toothbrush", "Pajamas", "Sleeping Bag", "Toiletries", "Chargers"],
+                hiking: ["Hiking Boots", "Backpack", "Water Bottle", "Snacks", "Map", "First Aid Kit"]
             };
 
             const packingList = Array.from(selectedTags).flatMap(tag => itemsByTag[tag] || []);
@@ -187,12 +192,10 @@
         }
 
         function updateTagButtonStyles() {
-            // Remove 'active' class from all buttons
             document.querySelectorAll('#tagForm button').forEach(button => {
                 button.classList.remove('active');
             });
 
-            // Add 'active' class to pressed tags
             selectedTags.forEach(tag => {
                 const button = document.getElementById(tag);
                 if (button) {
