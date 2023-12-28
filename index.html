@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packing List Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        #tagForm {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button.active {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #work {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        #coldWeather {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        #overnight {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        #hiking {
+            background-color: #27ae60;
+            color: #fff;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .checkbox {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent; /* Transparent border initially */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition border-color */
+        }
+
+        .checkbox.checked {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+
+        .checkbox.checked::before {
+            content: '\2713'; /* Unicode checkmark character */
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .work {
+            color: #1d5a90;
+        }
+
+        .coldWeather {
+            color: #a93222;
+        }
+
+        .overnight {
+            color: #c27c0e;
+        }
+
+        .hiking {
+            color: #1d8348;
+        }
+
+        li:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Packing List Generator</h1>
+    
+    <form id="tagForm">
+        <button id="work" type="button" name="work" onclick="toggleTag('work')">Work</button>
+        <button id="coldWeather" type="button" name="coldWeather" onclick="toggleTag('coldWeather')">Cold Weather</button>
+        <button id="overnight" type="button" name="overnight" onclick="toggleTag('overnight')">Staying Overnight</button>
+        <button id="hiking" type="button" name="hiking" onclick="toggleTag('hiking')">Hiking</button>
+    </form>
+
+    <h2>Packing List</h2>
+    <ul id="packingList"></ul>
+
+    <script>
+        const selectedTags = new Set();
+
+        function toggleTag(tag) {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag);
+            } else {
+                selectedTags.add(tag);
+            }
+
+            generatePackingList();
+        }
+
+        function toggleCheckbox(index) {
+            const checkbox = document.getElementById(`checkbox-${index}`);
+            checkbox.classList.toggle('checked');
+        }
+
+        function generatePackingList() {
+            const itemsByTag = {
+                work: ["Laptop", "Business Attire"],
+                coldWeather: ["Warm Jacket", "Gloves", "Hat"],
+                overnight: ["Toothbrush", "Pajamas", "Sleeping Bag"],
+                hiking: ["Hiking Boots", "Backpack", "Water Bottle"]
+            };
+
+            const packingList = Array.from(selectedTags).flatMap(tag => itemsByTag[tag] || []);
+            displayPackingList(packingList);
+        }
+
+        function displayPackingList(items) {
+            const packingListElement = document.getElementById('packingList');
+            packingListElement.innerHTML = '';
+
+            if (items.length === 0) {
+                packingListElement.innerHTML = '<p>No items selected.</p>';
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const listItem = document.createElement('li');
+
+                const checkbox = document.createElement('div');
+                checkbox.className = `checkbox ${selectedTags.has('work') ? 'work' :
+                                     selectedTags.has('coldWeather') ? 'coldWeather' :
+                                     selectedTags.has('overnight') ? 'overnight' :
+                                     selectedTags.has('hiking') ? 'hiking' : ''}`;
+                checkbox.id = `checkbox-${index}`;
+                checkbox.onclick = () => toggleCheckbox(index);
+                listItem.appendChild(checkbox);
+
+                const itemName = document.createElement('span');
+                itemName.textContent = item;
+                listItem.appendChild(itemName);
+
+                packingListElement.appendChild(listItem);
+            });
+
+            updateTagButtonStyles();
+        }
+
+        function updateTagButtonStyles() {
+            // Remove 'active' class from all buttons
+            document.querySelectorAll('#tagForm button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Add 'active' class to pressed tags
+            selectedTags.forEach(tag => {
+                const button = document.getElementById(tag);
+                if (button) {
+                    button.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
